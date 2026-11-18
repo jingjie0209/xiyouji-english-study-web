@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>西游记 108集英文学习整理</title>
+  <meta name="description" content="西游记108集英文台词、音标、中文、语法句型与固定搭配学习整理。" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div>
+        <p class="eyebrow">JOURNEY TO THE WEST · ENGLISH STUDY</p>
+        <h1>西游记 108 集英文学习整理</h1>
+        <p class="subtitle">按每集整理英文台词、音标、中文、语法句型与固定搭配</p>
+      </div>
+      <div class="header-actions">
+        <button class="ghost" id="printBtn">打印当前集</button>
+        <button class="primary" id="randomBtn">随机一集</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="section-label">全书目录</div>
+        <div class="count-badge">108 集</div>
+      </div>
+      <label class="search-box">
+        <span>⌕</span>
+        <input id="searchInput" placeholder="搜索集数、标题或英文" autocomplete="off" />
+      </label>
+      <div class="filters" id="rangeFilters">
+        <button class="filter active" data-range="all">全部 <span>108</span></button>
+        <button class="filter" data-range="1-36">第 1–36 集 <span>36</span></button>
+        <button class="filter" data-range="37-72">第 37–72 集 <span>36</span></button>
+        <button class="filter" data-range="73-108">第 73–108 集 <span>36</span></button>
+      </div>
+      <nav class="episode-list" id="episodeList" aria-label="集数目录"></nav>
+    </aside>
+
+    <section class="content" id="content">
+      <div class="loading" id="loading">正在加载 108 集内容……</div>
+      <div id="episodeView" hidden>
+        <div class="episode-hero">
+          <div>
+            <div class="episode-kicker" id="episodeKicker"></div>
+            <h2 id="episodeTitle"></h2>
+            <p class="episode-en-title" id="episodeEnTitle"></p>
+          </div>
+          <div class="episode-nav">
+            <button class="icon-btn" id="prevBtn" aria-label="上一集">←</button>
+            <button class="icon-btn" id="nextBtn" aria-label="下一集">→</button>
+          </div>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="dialogue" role="tab">台词整理</button>
+          <button class="tab" data-tab="grammar" role="tab">语法句型</button>
+          <button class="tab" data-tab="collocations" role="tab">固定搭配</button>
+        </div>
+        <div class="tab-panel" id="dialoguePanel"></div>
+        <div class="tab-panel" id="grammarPanel" hidden></div>
+        <div class="tab-panel" id="collocationsPanel" hidden></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">内容依据《西游记》英文学习 PDF 整理 · 扩展例句为学习练习，不是原文台词</footer>
+  <script src="data/episodes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
