@@ -10,7 +10,8 @@
       footer: '内容依据《西游记》英文学习 PDF 整理 · 扩展例句为学习练习，不是原文台词',
       ranges: [['all', '全部', ''], ['1-36', '第 1–36 集', '36'], ['37-72', '第 37–72 集', '36'], ['73-108', '第 73–108 集', '36']],
       panelNote: '按原 PDF 台词顺序排列。音标保留原 PDF 中的标注体系。',
-      theme: 'journey'
+      theme: 'journey',
+      switchLabel: '西游记'
     },
     forest: {
       id: 'forest',
@@ -22,11 +23,26 @@
       footer: 'The Big Green Forest：第1–7集、第11–24集按随附视频字幕核对；第8–10集本地未提供视频，按 Little Fox 官方台词页补齐。扩展例句为学习练习，不是原剧台词。',
       ranges: [['all', '全部', ''], ['1-24', '第 1–24 集', '24']],
       panelNote: '台词按视频英文字幕整理，音标采用美式英语近似读音。第8–10集本地没有视频文件，已按 Little Fox 官方台词页补齐。',
-      theme: 'forest'
+      theme: 'forest',
+      switchLabel: 'The Big Green Forest'
+    },
+    peppa: {
+      id: 'peppa',
+      episodes: window.PEPPA_EPISODES || [],
+      eyebrow: 'PEPPA PIG · SEASON 1 ENGLISH STUDY',
+      title: '小猪佩奇 第一季 52 集英文学习整理',
+      subtitle: '按每集聚合英文台词、音标、中文、语法句型与固定搭配',
+      catalog: '第一季目录',
+      footer: '小猪佩奇第一季：台词依据 52 集中英对照资料整理；音标采用 IPA 近似标注。扩展例句为学习练习，不是原剧台词。',
+      ranges: [['all', '全部', ''], ['1-26', '第 1–26 集', '26'], ['27-52', '第 27–52 集', '26']],
+      panelNote: '台词按小猪佩奇第一季资料顺序整理；音标采用 IPA 近似标注，角色信息以原资料可确认的内容为准。',
+      theme: 'peppa',
+      switchLabel: '小猪佩奇'
     }
   };
 
-  const state = { seriesId: location.hash === '#forest' ? 'forest' : 'journey', episode: 1, range: 'all', query: '', tab: 'dialogue' };
+  const hashSeries = location.hash.replace('#', '');
+  const state = { seriesId: seriesMap[hashSeries] ? hashSeries : 'journey', episode: 1, range: 'all', query: '', tab: 'dialogue' };
   const $ = (s) => document.querySelector(s);
   const list = $('#episodeList');
   const search = $('#searchInput');
@@ -38,7 +54,7 @@
   function setSeries(id) {
     if (!seriesMap[id] || id === state.seriesId) return;
     state.seriesId = id; state.episode = 1; state.range = 'all'; state.query = ''; state.tab = 'dialogue';
-    location.hash = id === 'forest' ? 'forest' : 'journey';
+    location.hash = id;
     search.value = '';
     render();
     window.scrollTo({top: 0, behavior: 'smooth'});
@@ -53,7 +69,7 @@
     $('#catalogLabel').textContent = s.catalog;
     $('#countBadge').textContent = `${episodes().length} 集`;
     $('#siteFooter').textContent = s.footer;
-    $('#seriesSwitch').innerHTML = Object.values(seriesMap).map(item => `<button class="series-chip ${item.id === state.seriesId ? 'active' : ''}" data-series="${item.id}">${esc(item.id === 'forest' ? 'The Big Green Forest' : '西游记')}</button>`).join('');
+    $('#seriesSwitch').innerHTML = Object.values(seriesMap).map(item => `<button class="series-chip ${item.id === state.seriesId ? 'active' : ''}" data-series="${item.id}">${esc(item.switchLabel)}</button>`).join('');
     $('#seriesSwitch').querySelectorAll('[data-series]').forEach(btn => btn.addEventListener('click', () => setSeries(btn.dataset.series)));
     $('#rangeFilters').innerHTML = s.ranges.map(([value, label, count]) => `<button class="filter ${value === state.range ? 'active' : ''}" data-range="${value}">${label} <span>${count || episodes().length}</span></button>`).join('');
     $('#rangeFilters').querySelectorAll('[data-range]').forEach(btn => btn.addEventListener('click', () => { state.range = btn.dataset.range; renderList(); renderSeriesShell(); }));
@@ -80,7 +96,8 @@
   function renderDialogue(e) {
     const withSpeaker = e.dialogue.some(r => r.speaker);
     const header = withSpeaker ? '<th>序号</th><th>角色</th><th>英文</th><th>音标</th><th>中文</th>' : '<th>序号</th><th>英文</th><th>音标</th><th>中文</th>';
-    const rows = e.dialogue.map((r,i) => withSpeaker ? `<tr><td>${i+1}</td><td class="speaker">${esc(r.speaker || '')}</td><td class="english">${esc(r.en)}</td><td class="ipa">/${esc(r.ipa)}/</td><td class="zh">${esc(r.zh)}</td></tr>` : `<tr><td>${i+1}</td><td class="english">${esc(r.en)}</td><td class="ipa">/${esc(r.ipa)}/</td><td class="zh">${esc(r.zh)}</td></tr>`).join('');
+    const ipaCell = (value) => value ? `/${esc(value)}/` : '—';
+    const rows = e.dialogue.map((r,i) => withSpeaker ? `<tr><td>${i+1}</td><td class="speaker">${esc(r.speaker || '')}</td><td class="english">${esc(r.en)}</td><td class="ipa">${ipaCell(r.ipa)}</td><td class="zh">${esc(r.zh)}</td></tr>` : `<tr><td>${i+1}</td><td class="english">${esc(r.en)}</td><td class="ipa">${ipaCell(r.ipa)}</td><td class="zh">${esc(r.zh)}</td></tr>`).join('');
     return `<p class="panel-intro">${esc(currentSeries().panelNote)}</p><table class="dialogue-table ${withSpeaker ? 'has-speaker' : ''}"><thead><tr>${header}</tr></thead><tbody>${rows}</tbody></table>`;
   }
 
@@ -91,7 +108,7 @@
 
   function renderCollocations(e) {
     if (!e.collocations.length) return '<div class="empty">本集暂未匹配到固定搭配。</div>';
-    return `<p class="panel-intro">固定搭配取自本集英文台词；语境栏保留完整原文句子。</p><table class="colloc-table"><thead><tr><th>固定搭配</th><th>音标</th><th>中文</th><th>原文语境</th></tr></thead><tbody>${e.collocations.map(r => `<tr><td class="phrase">${esc(r.phrase)}</td><td class="ipa">/${esc(r.ipa)}/</td><td>${esc(r.zh)}</td><td class="context">${esc(r.context)}</td></tr>`).join('')}</tbody></table>`;
+    return `<p class="panel-intro">固定搭配取自本集英文台词；语境栏保留完整原文句子。</p><table class="colloc-table"><thead><tr><th>固定搭配</th><th>音标</th><th>中文</th><th>原文语境</th></tr></thead><tbody>${e.collocations.map(r => `<tr><td class="phrase">${esc(r.phrase)}</td><td class="ipa">${r.ipa ? `/${esc(r.ipa)}/` : '—'}</td><td>${esc(r.zh)}</td><td class="context">${esc(r.context)}</td></tr>`).join('')}</tbody></table>`;
   }
 
   function render() {
@@ -117,6 +134,6 @@
   $('#nextBtn').addEventListener('click', () => { if (state.episode < episodes().length) { state.episode++; render(); } });
   $('#randomBtn').addEventListener('click', () => { state.episode = episodes()[Math.floor(Math.random() * episodes().length)].episode; render(); window.scrollTo({top:0,behavior:'smooth'}); });
   $('#printBtn').addEventListener('click', () => { document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('print-active')); window.print(); setTimeout(() => document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('print-active')), 500); });
-  window.addEventListener('hashchange', () => { const next = location.hash === '#forest' ? 'forest' : 'journey'; if (next !== state.seriesId) { state.seriesId = next; state.episode = 1; state.range = 'all'; state.query = ''; search.value = ''; render(); } });
+  window.addEventListener('hashchange', () => { const hash = location.hash.replace('#', ''); const next = seriesMap[hash] ? hash : 'journey'; if (next !== state.seriesId) { state.seriesId = next; state.episode = 1; state.range = 'all'; state.query = ''; search.value = ''; render(); } });
   render();
 })();

@@ -120,6 +120,9 @@ tr:nth-child(even) td { background: #f7faff; }
 .series-chip:hover, .series-chip.active { background: var(--blue); color: #fff; border-color: var(--blue); }
 body[data-series="forest"] { --blue: #2d7968; --blue-2: #e9f5ef; --warm: #fff8ee; }
 body[data-series="forest"] .colloc-table th { background: #cf7833; }
+body[data-series="peppa"] { --blue: #a84f73; --blue-2: #fff0f5; --warm: #fff8f1; }
+body[data-series="peppa"] .site-header { background: linear-gradient(120deg, #fff 0%, #fff4f7 100%); }
+body[data-series="peppa"] .colloc-table th { background: #d47745; }
 .speaker { color: #536b8e; font-weight: 800; white-space: nowrap; }
 .dialogue-table.has-speaker th:first-child, .dialogue-table.has-speaker td:first-child { width: 44px; text-align: center; }
 .dialogue-table.has-speaker th:nth-child(2) { width: 12%; }
