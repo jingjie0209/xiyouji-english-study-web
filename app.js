@@ -317,9 +317,9 @@
       `;
     }).join('');
     return `
-      <div class="overview-hero">
+      <div id="weeklyPlanList">${listHtml}</div>
+      <div class="overview-footer">
         <p class="overview-desc">每周学习一集。台词按周一、三、五均分推进；周二、四复习前面内容；周六、日完整复习且只看英文。3 个句型在周一至周三递进学习，周四至周日举一反三；固定搭配周一至周五每天 2 个，周末复习。<button class="stats-help" data-stats-help aria-expanded="false" aria-label="查看统计">?</button></p>
-      </div>
       <div class="stats-modal" data-stats-modal hidden>
         <div class="stats-modal-inner">
           <div class="stats-modal-head"><strong>学习统计</strong><button type="button" data-stats-close aria-label="关闭">×</button></div>
@@ -332,7 +332,7 @@
           </div>
         </div>
       </div>
-      <div id="weeklyPlanList">${listHtml}</div>
+      </div>
     `;
   }
 
