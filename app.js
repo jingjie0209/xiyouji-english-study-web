@@ -142,7 +142,7 @@
       planEntry.querySelector('#planEpisodeSelect').addEventListener('change', event => {
         const value = event.target.value;
         if (!value) return;
-        if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; console.log('PLAN_FILTER_SET plan'); render(); return; }
+        if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; render(); return; }
         state.view = 'plan'; state.planEpisode = Number(value); render();
       });
     } else {
