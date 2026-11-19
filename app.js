@@ -370,7 +370,9 @@
       document.querySelector('#loading').hidden = true;
       const planEpisodeView = document.querySelector('#content #episodeView');
       if (planEpisodeView) planEpisodeView.hidden = true;
-      $('#content').innerHTML = '<div class="plan-content-wrap">' + renderPlan() + '</div>';
+      const planHtml = '<div class="plan-content-wrap">' + renderPlan() + '</div>';
+      console.log('PLAN_FILTER_HTML_WEEKS', (planHtml.match(/plan-week/g)||[]).length);
+      $('#content').innerHTML = planHtml;
       bindPlanEvents($('#content'));
       renderList();
       return;
