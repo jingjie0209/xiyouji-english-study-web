@@ -145,7 +145,6 @@
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
         render();
-        console.log('FILTER_APPLY_WEEKS', document.querySelectorAll('.plan-week').length, state.planEpisode);
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
