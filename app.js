@@ -143,7 +143,7 @@
         const value = event.target.value;
         if (!value) return;
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; render(); return; }
-        state.view = 'plan'; state.planEpisode = Number(value);
+        state.view = 'plan'; state.planEpisode = Number(value); console.log('ASSIGNED', state.view, state.planEpisode);
         render();
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
