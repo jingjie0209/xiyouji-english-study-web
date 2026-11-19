@@ -142,8 +142,8 @@
       planEntry.querySelector('#planEpisodeSelect').addEventListener('change', event => {
         const value = event.target.value;
         if (!value) return;
-        if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; render(); return; }
-        state.view = 'plan'; state.planEpisode = Number(value); render();
+        if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; window.__setPlan = 'plan'; render(); return; }
+        state.view = 'plan'; state.planEpisode = Number(value); window.__setPlan = Number(value); render();
       });
     } else {
       planEntry.hidden = true;
@@ -426,6 +426,8 @@
   $('#nextBtn').addEventListener('click', () => { if (state.episode < episodes().length) { state.episode++; render(); } });
   window.addEventListener('hashchange', () => {
     const hash = location.hash.replace('#', '').split('?')[0];
+    window.__lastHash = hash;
+    window.__hashTriggered = (window.__hashTriggered || 0) + 1;
     const targetView = hash === 'peppa-plan' ? 'plan' : 'episode';
     const next = ['peppa', 'forest', 'journey'].includes(hash) ? hash : (targetView === 'plan' ? 'peppa' : 'peppa');
     const shouldRender = next !== state.seriesId || (next === 'peppa' && targetView !== state.view);
