@@ -60,7 +60,7 @@
   }
 
   const pepaPlan = (() => {
-    if (!currentSeries().plan) return null;
+    if (!window.PEPPA_PLAN_DATA || !window.PEPPA_PLAN_DATA.grammar.length || !window.PEPPA_PLAN_DATA.collocations.length) return null;
     const weeklyGrammar = [];
     const weeklyCollocations = [];
     for (let week = 0; week < 52; week++) {
@@ -152,8 +152,8 @@
   function renderPlan() {
     const listHtml = episodes().map((e, index) => {
       const days = splitLines(e.dialogue, 4);
-      const grammar = pepaPlan.weeklyGrammar[index] || [];
-      const collocations = pepaPlan.weeklyCollocations[index] || [];
+      const grammar = pepaPlan?.weeklyGrammar?.[index] || [];
+      const collocations = pepaPlan?.weeklyCollocations?.[index] || [];
       const detail = days.map((day) => `
         <article class="plan-day">
           <div class="plan-day-label">${esc(day.label)}</div>
