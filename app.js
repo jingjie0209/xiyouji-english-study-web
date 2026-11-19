@@ -145,7 +145,7 @@
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; render(); return; }
         state.view = 'plan'; state.planEpisode = Number(value);
         render();
-        setTimeout(() => { console.log('POST_RENDER_CHECK', document.querySelectorAll('.plan-week').length, state.planEpisode); }, 50);
+        setTimeout(() => { console.log('POST_RENDER_CHECK', document.querySelectorAll('.plan-week').length, state.planEpisode); }, 200);
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
