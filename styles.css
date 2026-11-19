@@ -197,10 +197,10 @@ body[data-series="peppa"] .colloc-table th { background: #d47745; }
 .line-table th { background: var(--blue); color: #fff; padding: 8px 10px; font-size: 11px; text-align: left; }
 .line-table td { padding: 9px 10px; border-top: 1px solid #e6ebf2; vertical-align: top; font-size: 13px; line-height: 1.45; }
 .line-table tbody tr:nth-child(even) td { background: #f8fbff; }
-.line-table .line-number { width: 42px; text-align: center; color: var(--muted); font-weight: 800; }
-.line-table .line-zh { width: 36%; color: #3c4d65; }
+.line-table .line-number { width: 52px; text-align: center; color: var(--muted); font-weight: 800; }
 .line-table .line-en { width: 42%; font: 13px/1.45 Georgia, "Times New Roman", serif; color: #1f3555; }
-.line-table .ipa { width: 22%; font: 12px/1.45 Georgia, serif; color: #71809a; }
+.line-table .ipa { width: 24%; font: 12px/1.45 Georgia, serif; color: #71809a; }
+.line-table .line-zh { width: 30%; color: #3c4d65; }
 .line-table tr.review-row .line-en { font-weight: 700; }
 .plan-inline-zh { margin-left: 7px; color: #66748a; font-weight: 600; }
 .plan-lines { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); display: grid; gap: 8px; }
