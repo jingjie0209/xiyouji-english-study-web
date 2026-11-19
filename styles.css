@@ -190,6 +190,7 @@ body[data-series="peppa"] .colloc-table th { background: #d47745; }
 .plan-day-meta { margin-top: 6px; color: var(--muted); font-size: 12px; }
 .day-block-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
 .day-block-heading .plan-day-meta { margin-top: 0; }
+.plan-content-wrap { background: transparent; }
 .line-table { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border: 1px solid #dbe3ed; border-radius: 8px; }
 .line-table th { background: var(--blue); color: #fff; padding: 8px 10px; font-size: 11px; text-align: left; }
 .line-table td { padding: 9px 10px; border-top: 1px solid #e6ebf2; vertical-align: top; font-size: 13px; line-height: 1.45; }

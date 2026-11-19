@@ -355,10 +355,36 @@
     if (s.plan && state.view === 'plan') {
       $('#loading').hidden = true;
       $('#episodeView').hidden = true;
-      $('#content').innerHTML = renderPlan();
+      $('#content').innerHTML = '<div class="plan-content-wrap">' + renderPlan() + '</div>';
       bindPlanEvents($('#content'));
       renderList();
       return;
+    }
+    if (!document.querySelector('#episodeView')) {
+      $('#content').innerHTML = `
+        <div id="episodeView" hidden>
+          <div class="episode-hero">
+            <div>
+              <div class="episode-kicker" id="episodeKicker"></div>
+              <h2 id="episodeTitle"></h2>
+              <p class="episode-en-title" id="episodeEnTitle"></p>
+            </div>
+            <div class="episode-nav">
+              <button class="icon-btn" id="prevBtn" aria-label="上一集">←</button>
+              <button class="icon-btn" id="nextBtn" aria-label="下一集">→</button>
+            </div>
+          </div>
+          <div class="stats" id="stats"></div>
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="dialogue" role="tab">台词整理</button>
+            <button class="tab" data-tab="grammar" role="tab">语法句型</button>
+            <button class="tab" data-tab="collocations" role="tab">固定搭配</button>
+          </div>
+          <div class="tab-panel" id="dialoguePanel"></div>
+          <div class="tab-panel" id="grammarPanel" hidden></div>
+          <div class="tab-panel" id="collocationsPanel" hidden></div>
+        </div>
+      `;
     }
     const e = episode(); if (!e) return;
     $('#loading').hidden = true; $('#episodeView').hidden = false;
