@@ -143,7 +143,7 @@
         const value = event.target.value;
         if (!value) return;
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; render(); return; }
-        state.view = 'plan'; state.planEpisode = Number(value); console.log('BEFORE_RENDER_PLAN', state.view, state.planEpisode, episodes().filter(e => e.episode === state.planEpisode).length); render();
+        state.view = 'plan'; state.planEpisode = Number(value); render();
       });
     } else {
       planEntry.hidden = true;
