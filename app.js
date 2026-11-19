@@ -375,7 +375,6 @@
       $('#content').innerHTML = '<div class="plan-content-wrap">' + renderPlan() + '</div>';
       bindPlanEvents($('#content'));
       return;
-
     }
     if (!document.querySelector('#content #episodeView')) {
       $('#content').innerHTML = `
