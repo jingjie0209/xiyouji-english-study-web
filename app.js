@@ -53,6 +53,12 @@
   const episode = () => episodes().find(e => e.episode === state.episode) || episodes()[0];
   const planData = { get grammar() { return window.PEPPA_PLAN_DATA?.grammar || []; }, get collocations() { return window.PEPPA_PLAN_DATA?.collocations || []; } };
 
+  function balancedParts(items, count) {
+    const groups = Array.from({ length: count }, () => []);
+    items.forEach((item, index) => groups[index % count].push(item));
+    return groups.map(group => group.length ? group : []);
+  }
+
   function newMorningGroups(items) {
     const balanced = balancedParts(items, 3);
     const groups = Array.from({ length: 7 }, () => []);
