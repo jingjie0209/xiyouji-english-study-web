@@ -144,7 +144,6 @@
         if (!value) return;
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
-        renderSeriesShell();
         render();
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
