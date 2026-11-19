@@ -145,6 +145,7 @@
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
         renderSeriesShell();
+        document.body.classList.toggle('plan-view', true);
         render();
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
