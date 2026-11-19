@@ -388,6 +388,9 @@
     }
     const e = episode(); if (!e) return;
     $('#loading').hidden = true; $('#episodeView').hidden = false;
+    $('#prevBtn').addEventListener('click', () => { if (state.episode > 1) { state.episode--; render(); } });
+    $('#nextBtn').addEventListener('click', () => { if (state.episode < episodes().length) { state.episode++; render(); } });
+    document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => { state.tab = btn.dataset.tab; render(); }));
     $('#episodeKicker').textContent = `第 ${e.episode} 集 · ${e.range} 集单元`;
     $('#episodeTitle').textContent = e.titleZh;
     $('#episodeEnTitle').textContent = e.titleEn || s.title;
