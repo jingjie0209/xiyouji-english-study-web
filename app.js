@@ -43,7 +43,7 @@
   };
 
   const hashRoute = location.hash.replace('#', '').split('?')[0];
-  const state = { seriesId: ['journey', 'forest', 'peppa'].includes(hashRoute) ? hashRoute : 'journey', view: hashRoute === 'peppa-plan' ? 'plan' : 'episode', episode: 1, range: 'all', query: '', tab: 'dialogue' };
+  const state = { seriesId: ['peppa', 'forest', 'journey'].includes(hashRoute) ? hashRoute : (hashRoute === 'peppa-plan' || !hashRoute ? 'peppa' : hashRoute), view: hashRoute === 'peppa-plan' ? 'plan' : 'episode', episode: 1, range: 'all', query: '', tab: 'dialogue' };
   const $ = (s) => document.querySelector(s);
   const list = $('#episodeList');
   const search = $('#searchInput');
@@ -368,7 +368,7 @@
   window.addEventListener('hashchange', () => {
     const hash = location.hash.replace('#', '').split('?')[0];
     const targetView = hash === 'peppa-plan' ? 'plan' : 'episode';
-    const next = ['journey', 'forest', 'peppa'].includes(hash) ? hash : (targetView === 'plan' ? 'peppa' : 'journey');
+    const next = ['peppa', 'forest', 'journey'].includes(hash) ? hash : (targetView === 'plan' ? 'peppa' : 'peppa');
     const shouldRender = next !== state.seriesId || (next === 'peppa' && targetView !== state.view);
     if (shouldRender) {
       if (next !== state.seriesId) { state.episode = 1; state.range = 'all'; state.query = ''; search.value = ''; }
