@@ -269,7 +269,12 @@
         '根据 3 个句型举一反三'
       ];
       const dayCards = dayNames.map((name, dayIndex) => {
-        const morningItems = groups[dayIndex] || [];
+        let morningItems;
+        if (dayIndex === 5 || dayIndex === 6) {
+          morningItems = (groups[0] || []).concat(groups[2] || []).concat(groups[4] || []);
+        } else {
+          morningItems = groups[dayIndex] || [];
+        }
         const isReview = reviewDays.has(dayIndex);
         const sentenceItems = sentencePractice[sentenceKeys[dayIndex]] || [];
         const collocItems = dayIndex <= 4 ? (dailyCollocations[dayIndex] || []) : collocations;
