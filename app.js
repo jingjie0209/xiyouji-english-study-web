@@ -360,7 +360,7 @@
       renderList();
       return;
     }
-    if (!document.querySelector('#episodeView')) {
+    if (!document.querySelector('#content #episodeView')) {
       $('#content').innerHTML = `
         <div id="episodeView" hidden>
           <div class="episode-hero">
@@ -387,7 +387,7 @@
       `;
     }
     const e = episode(); if (!e) return;
-    $('#loading').hidden = true; $('#episodeView').hidden = false;
+    $('#loading').hidden = true; $('#content #episodeView').hidden = false;
     $('#prevBtn').addEventListener('click', () => { if (state.episode > 1) { state.episode--; render(); } });
     $('#nextBtn').addEventListener('click', () => { if (state.episode < episodes().length) { state.episode++; render(); } });
     document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => { state.tab = btn.dataset.tab; render(); }));
