@@ -144,7 +144,7 @@
         if (!value) return;
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
-        location.hash = 'peppa-plan';
+        console.log('FILTER_SET', value, state.view, state.planEpisode);
         render();
         
         window.scrollTo({top: 0, behavior: 'smooth'});
