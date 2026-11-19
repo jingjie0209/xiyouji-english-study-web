@@ -194,27 +194,20 @@
     `;
   }
 
-  function collocationHtml(item, index) {
+  function lineTableRow(row, includeZh=true) {
     return `
-      <div class="plan-item">
-        <div class="plan-item-no">${esc(String(index + 1))}</div>
-        <div>
-          <div class="plan-item-title">${esc(item.phrase)}${item.ipa ? ` <span class="ipa">/${esc(item.ipa)}/</span>` : ''}</div>
-          <div class="plan-item-detail">${esc(item.zh)}</div>
-          <div class="plan-item-detail">语境：${esc(item.context)}</div>
-        </div>
-        <div class="plan-item-right">全季次数 ${esc(String(item.count))}</div>
-      </div>
+      <tr class="${includeZh ? '' : 'review-row'}">
+        <td class="line-number">${esc(String(row.lineNumber))}</td>
+        ${includeZh ? `<td class="line-zh">${esc(row.zh || '')}</td>` : ''}
+        <td class="line-en">${esc(row.en)}</td>
+        <td class="ipa">${row.ipa ? `/${esc(row.ipa)}/` : '—'}</td>
+      </tr>
     `;
   }
 
-  function lineHtml(row, includeZh=true) {
-    return `
-      <div>
-        <div class="plan-line-en">${esc(row.lineNumber)}. ${esc(row.en)}</div>
-        ${includeZh ? `<div class="plan-line-zh">${esc(row.zh || '')}${row.ipa ? ` · /${esc(row.ipa)}/` : ''}</div>` : ''}
-      </div>
-    `;
+  function lineTable(rows, includeZh=true) {
+    const header=`<tr>${includeZh ? '<th>中文</th>' : ''}<th>英文</th><th>音标</th></tr>`;
+    return `<table class="line-table"><thead>${header}</thead><tbody>${rows.map(row => lineTableRow(row,includeZh)).join('')}</tbody></table>`;
   }
 
   function sentenceHtml(item, index) {
@@ -236,8 +229,7 @@
       <div class="plan-item">
         <div class="plan-item-no">${esc(String(index + 1))}</div>
         <div>
-          <div class="plan-item-title">${esc(item.phrase)}${item.ipa ? ` <span class="ipa">/${esc(item.ipa)}/</span>` : ''}</div>
-          <div class="plan-item-detail">${esc(item.zh)}</div>
+          <div class="plan-item-title">${esc(item.phrase)}${item.ipa ? ` <span class="ipa">/${esc(item.ipa)}/</span>` : ''} <span class="plan-inline-zh">${esc(item.zh)}</span></div>
           <div class="plan-item-detail">语境：${esc(item.context)}</div>
         </div>
         <div class="plan-item-right">全季次数 ${esc(String(item.count))}</div>
@@ -276,18 +268,15 @@
           <article class="plan-day">
             <div class="plan-day-label">周${esc(name)}</div>
             <div class="day-block">
-              <div class="day-block-title">晨读</div>
-              <div class="plan-day-meta">${esc(morningTask)}</div>
-              <div class="plan-lines">${morningItems.map(row => lineHtml(row, !isReview)).join('') || '<div class="plan-day-meta">复习前面晨读内容。</div>'}</div>
+              <div class="day-block-heading"><div class="day-block-title">晨读</div><div class="plan-day-meta">${esc(morningTask)}</div></div>
+              ${lineTable(morningItems, !isReview)}
             </div>
             <div class="day-block">
-              <div class="day-block-title">句型</div>
-              <div class="plan-day-meta">${esc(sentenceTasks[dayIndex])}</div>
+              <div class="day-block-heading"><div class="day-block-title">句型</div><div class="plan-day-meta">${esc(sentenceTasks[dayIndex])}</div></div>
               <div class="plan-grid">${sentenceItems.map((item, itemIndex) => sentenceHtml(item, itemIndex)).join('') || '<div class="plan-day-meta">本周期暂无句型安排。</div>'}</div>
             </div>
             <div class="day-block">
-              <div class="day-block-title">固定搭配</div>
-              <div class="plan-day-meta">${dayIndex <= 4 ? '学习 2 个搭配' : '复习本周 10 个搭配'}</div>
+              <div class="day-block-heading"><div class="day-block-title">固定搭配</div><div class="plan-day-meta">${dayIndex <= 4 ? '学习 2 个搭配' : '复习本周 10 个搭配'}</div></div>
               <div class="plan-grid">${collocItems.map((item, itemIndex) => collocationHtml(item, index * 10 + dayIndex * 2 + itemIndex)).join('') || '<div class="plan-day-meta">复习前面固定搭配。</div>'}</div>
             </div>
           </article>
