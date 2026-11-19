@@ -144,9 +144,6 @@
         if (!value) return;
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; location.hash = 'peppa-plan'; render(); return; }
         state.view = 'plan'; state.planEpisode = Number(value); location.hash = 'peppa-plan'; render();
-        location.hash = 'peppa';
-        render();
-        window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
       planEntry.hidden = true;
