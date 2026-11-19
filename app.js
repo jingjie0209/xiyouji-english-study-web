@@ -132,7 +132,7 @@
       planEntry.innerHTML = `
         <button class="plan-entry-button ${state.view === 'plan' ? 'active' : ''}" data-plan-entry="true"><span>学习总览与计划</span></button>
         <select class="plan-episode-select" id="planEpisodeSelect" aria-label="选择集数查看详细内容">
-          <option value="plan" ${(state.view === 'plan' && !state.planEpisode) ? 'selected' : ''}>选择集数查看详细内容</option>
+          <option value="">选择集数查看详细内容</option>
           ${options}
         </select>
       `;
@@ -140,10 +140,10 @@
       planEntry.querySelector('#planEpisodeSelect').addEventListener('change', event => {
         const value = event.target.value;
         if (!value) return;
-        state.view = 'plan';
-        state.planEpisode = value === 'plan' ? null : Number(value);
-        renderSeriesShell();
-        renderPlanOnly();
+        state.view = 'episode';
+        state.episode = Number(value);
+        location.hash = 'peppa';
+        render();
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
