@@ -252,7 +252,8 @@
 
   function renderPlan() {
     const planEpisodes = state.planEpisode ? episodes().filter(e => e.episode === state.planEpisode) : episodes();
-    const listHtml = planEpisodes.map((e, index) => {
+    const listHtml = planEpisodes.map((e, episodeIndex) => {
+      const index = episodes().indexOf(e);
       const lines = e.dialogue;
       const grammar = pepaPlan?.weeklyGrammar?.[index] || [];
       const collocations = pepaPlan?.weeklyCollocations?.[index] || [];
