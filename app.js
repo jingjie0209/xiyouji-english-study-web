@@ -387,18 +387,19 @@
       `;
     }
     const e = episode(); if (!e) return;
-    $('#loading').hidden = true; $('#content #episodeView').hidden = false;
+    document.querySelector('#loading').hidden = true;
+    document.querySelector('#content #episodeView').hidden = false;
     $('#prevBtn').addEventListener('click', () => { if (state.episode > 1) { state.episode--; render(); } });
     $('#nextBtn').addEventListener('click', () => { if (state.episode < episodes().length) { state.episode++; render(); } });
     document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => { state.tab = btn.dataset.tab; render(); }));
-    $('#episodeKicker').textContent = `第 ${e.episode} 集 · ${e.range} 集单元`;
-    $('#episodeTitle').textContent = e.titleZh;
-    $('#episodeEnTitle').textContent = e.titleEn || s.title;
-    $('#stats').innerHTML = stats(e);
+    document.querySelector('#episodeKicker').textContent = `第 ${e.episode} 集 · ${e.range} 集单元`;
+    document.querySelector('#episodeTitle').textContent = e.titleZh;
+    document.querySelector('#episodeEnTitle').textContent = e.titleEn || s.title;
+    document.querySelector('#stats').innerHTML = stats(e);
     $('#prevBtn').disabled = e.episode <= 1; $('#nextBtn').disabled = e.episode >= episodes().length;
-    $('#dialoguePanel').innerHTML = renderDialogue(e);
-    $('#grammarPanel').innerHTML = renderGrammar(e);
-    $('#collocationsPanel').innerHTML = renderCollocations(e);
+    document.querySelector('#dialoguePanel').innerHTML = renderDialogue(e);
+    document.querySelector('#grammarPanel').innerHTML = renderGrammar(e);
+    document.querySelector('#collocationsPanel').innerHTML = renderCollocations(e);
     document.querySelectorAll('.tab').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === state.tab));
     document.querySelectorAll('.tab-panel').forEach(panel => panel.hidden = panel.id !== `${state.tab}Panel`);
     renderList();
