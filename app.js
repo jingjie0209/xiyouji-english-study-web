@@ -132,8 +132,23 @@
     const planEntry = $('#planEntry');
     if (s.plan) {
       planEntry.hidden = false;
-      planEntry.innerHTML = `<button class="plan-entry-button ${state.view === 'plan' ? 'active' : ''}" data-plan-entry="true"><span>学习总览与计划</span><span class="new-badge">NEW</span></button>`;
+      const options = episodes().map(e => `<option value="${e.episode}" ${state.view === 'episode' && state.episode === e.episode ? 'selected' : ''}>第 ${e.episode} 集 · ${esc(e.titleZh)}</option>`).join('');
+      planEntry.innerHTML = `
+        <button class="plan-entry-button ${state.view === 'plan' ? 'active' : ''}" data-plan-entry="true"><span>学习总览与计划</span><span class="new-badge">NEW</span></button>
+        <select class="plan-episode-select" id="planEpisodeSelect" aria-label="选择集数查看详细内容">
+          <option value="">选择集数查看详细内容</option>
+          ${options}
+        </select>
+      `;
       planEntry.querySelector('[data-plan-entry]').addEventListener('click', () => showOverview());
+      planEntry.querySelector('#planEpisodeSelect').addEventListener('change', event => {
+        const value = Number(event.target.value);
+        if (!value) return;
+        state.view = 'episode'; state.episode = value; state.tab = 'dialogue';
+        location.hash = 'peppa';
+        render();
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      });
     } else {
       planEntry.hidden = true;
       planEntry.innerHTML = '';
@@ -336,6 +351,7 @@
   function render() {
     const s = currentSeries();
     renderSeriesShell();
+    document.body.classList.toggle('plan-view', !!(s.plan && state.view === 'plan'));
     if (s.plan && state.view === 'plan') {
       $('#loading').hidden = true;
       $('#episodeView').hidden = true;
