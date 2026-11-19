@@ -62,14 +62,10 @@
   const pepaPlan = (() => {
     if (!currentSeries().plan) return null;
     const weeklyGrammar = [];
-    for (let week = 0; week < 52; week++) {
-      const start = week * 3;
-      weeklyGrammar.push(planData.grammar.slice(start, start + 3));
-    }
     const weeklyCollocations = [];
     for (let week = 0; week < 52; week++) {
-      const start = week * 10;
-      weeklyCollocations.push(planData.collocations.slice(start, start + 10));
+      weeklyGrammar.push(Array.from({ length: 3 }, (_, i) => planData.grammar[(week * 3 + i) % planData.grammar.length]));
+      weeklyCollocations.push(Array.from({ length: 10 }, (_, i) => planData.collocations[(week * 10 + i) % planData.collocations.length]));
     }
     return { weeklyGrammar, weeklyCollocations };
   })();
