@@ -154,7 +154,9 @@ body[data-series="peppa"] .colloc-table th { background: #d47745; }
 }
 
 /* Peppa overview and weekly plan */
-.overview-hero { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 28px 30px; margin-bottom: 20px; }
+.overview-hero { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 20px 24px; margin-bottom: 20px; }
+.stats-help { margin-left: 8px; width: 20px; height: 20px; border-radius: 999px; border: 1px solid #cbd7e8; background: white; color: var(--blue); font-size: 12px; font-weight: 800; line-height: 1; cursor: pointer; }
+.stats-help:hover, .stats-help[aria-expanded="true"] { background: var(--blue); color: #fff; border-color: var(--blue); }
 .overview-top { display: flex; justify-content: space-between; gap: 24px; align-items: start; }
 .overview-kicker { font: 800 12px/1 Arial, sans-serif; letter-spacing: .12em; color: #8aa0bd; }
 .overview-title { margin: 9px 0 0; font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -.04em; color: #243c60; }

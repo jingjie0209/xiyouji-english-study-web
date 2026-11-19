@@ -317,15 +317,8 @@
     }).join('');
     return `
       <div class="overview-hero">
-        <div class="overview-top">
-          <div>
-            <p class="overview-kicker">PEPPA PIG · 52 WEEK PLAN</p>
-            <h2 class="overview-title">小猪佩奇第一季学习总览与计划</h2>
-            <p class="overview-desc">每周学习一集。台词按周一、三、五均分推进；周二、四复习前面内容；周六、日完整复习且只看英文。3 个句型在周一至周三递进学习，周四至周日举一反三；固定搭配周一至周五每天 2 个，周末复习。</p>
-          </div>
-
-        </div>
-        <div class="overview-stats">
+        <p class="overview-desc">每周学习一集。台词按周一、三、五均分推进；周二、四复习前面内容；周六、日完整复习且只看英文。3 个句型在周一至周三递进学习，周四至周日举一反三；固定搭配周一至周五每天 2 个，周末复习。<button class="stats-help" data-stats-help aria-expanded="false" aria-label="查看统计">?</button></p>
+        <div class="overview-stats" hidden>
           <div class="overview-stat"><strong>52</strong><span>周</span></div>
           <div class="overview-stat"><strong>${episodes().length}</strong><span>集</span></div>
           <div class="overview-stat"><strong>${episodes().reduce((sum, e) => sum + e.lineCount, 0)}</strong><span>组台词</span></div>
@@ -338,6 +331,14 @@
   }
 
   function bindPlanEvents(root=document) {
+    root.querySelectorAll('[data-stats-help]').forEach(button => {
+      button.addEventListener('click', () => {
+        const stats = button.closest('.overview-hero').querySelector('.overview-stats');
+        const shown = !stats.hidden;
+        stats.hidden = shown;
+        button.setAttribute('aria-expanded', shown ? 'false' : 'true');
+      });
+    });
     root.querySelectorAll('[data-week-toggle]').forEach(button => {
       button.addEventListener('click', () => {
         if (event.target.closest('.week-download')) return;
