@@ -431,7 +431,6 @@
     const targetView = hash === 'peppa-plan' ? 'plan' : 'episode';
     const next = ['peppa', 'forest', 'journey'].includes(hash) ? hash : (targetView === 'plan' ? 'peppa' : 'peppa');
     const shouldRender = next !== state.seriesId || (next === 'peppa' && targetView !== state.view);
-    console.log('HASH_CHANGE_RENDER', hash, targetView, shouldRender);
     if (shouldRender) {
       if (next !== state.seriesId) { state.episode = 1; state.range = 'all'; state.query = ''; search.value = ''; }
       state.seriesId = next; state.view = targetView; render();
