@@ -51,7 +51,7 @@
   const currentSeries = () => seriesMap[state.seriesId];
   const episodes = () => currentSeries().episodes;
   const episode = () => episodes().find(e => e.episode === state.episode) || episodes()[0];
-  const planData = window.PEPPA_PLAN_DATA || { grammar: [], collocations: [] };
+  const planData = { get grammar() { return window.PEPPA_PLAN_DATA?.grammar || []; }, get collocations() { return window.PEPPA_PLAN_DATA?.collocations || []; } };
 
   function balancedParts(items, count) {
     const groups = Array.from({ length: count }, () => []);
