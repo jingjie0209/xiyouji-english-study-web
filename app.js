@@ -279,7 +279,7 @@
           ? `学习新台词 ${morningItems.length} 句`
           : (dayIndex === 1 ? '复习周一晨读内容' : (dayIndex === 3 ? '复习周一、周三晨读内容' : '完整复习本周台词'));
         return `
-          <article class="plan-day">
+          <article class="plan-day ${dayIndex === 0 ? 'active' : ''}">
             <div class="plan-day-label">周${esc(name)}</div>
             <div class="day-block">
               <div class="day-block-heading"><div class="day-block-title">晨读</div><div class="plan-day-meta">${esc(morningTask)}</div></div>
