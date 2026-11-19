@@ -140,7 +140,7 @@
         if (!value) return;
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
-        render();
+        renderPlanOnly();
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
@@ -355,6 +355,11 @@
         button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
     });
+  }
+
+  function renderPlanOnly() {
+    document.querySelector('#content .plan-content-wrap').innerHTML = renderPlan();
+    bindPlanEvents(document.querySelector('#content .plan-content-wrap'));
   }
 
   function render() {
