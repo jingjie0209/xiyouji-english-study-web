@@ -43,7 +43,7 @@
   };
 
   const hashRoute = location.hash.replace('#', '').split('?')[0];
-  const state = { seriesId: ['peppa', 'forest', 'journey'].includes(hashRoute) ? hashRoute : (hashRoute === 'peppa-plan' || !hashRoute ? 'peppa' : hashRoute), view: hashRoute === 'peppa-plan' ? 'plan' : 'episode', episode: 1, range: 'all', query: '', tab: 'dialogue' };
+  const state = { seriesId: ['peppa', 'forest', 'journey'].includes(hashRoute) ? hashRoute : (hashRoute === 'peppa-plan' || !hashRoute ? 'peppa' : hashRoute), view: hashRoute === 'peppa-plan' ? 'plan' : 'episode', episode: 1, planEpisode: null, range: 'all', query: '', tab: 'dialogue' };
   const $ = (s) => document.querySelector(s);
   const list = $('#episodeList');
   const search = $('#searchInput');
@@ -99,7 +99,7 @@
 
   function setSeries(id) {
     if (!seriesMap[id] || id === state.seriesId) return;
-    state.seriesId = id; state.episode = 1; state.range = 'all'; state.query = ''; state.tab = 'dialogue';
+    state.seriesId = id; state.episode = 1; state.range = 'all'; state.query = ''; state.tab = 'dialogue'; state.planEpisode = null;
     state.view = 'episode';
     location.hash = id;
     search.value = '';
@@ -132,19 +132,18 @@
     const planEntry = $('#planEntry');
     if (s.plan) {
       planEntry.hidden = false;
-      const options = episodes().map(e => `<option value="${e.episode}" ${state.view === 'episode' && state.episode === e.episode ? 'selected' : ''}>第 ${e.episode} 集 · ${esc(e.titleZh)}</option>`).join('');
+      const options = episodes().map(e => `<option value="${e.episode}" ${(state.view === 'plan' && state.planEpisode === e.episode) ? 'selected' : ''}>学习计划 - 第 ${e.episode} 集</option>`).join('');
       planEntry.innerHTML = `
-        <button class="plan-entry-button ${state.view === 'plan' ? 'active' : ''}" data-plan-entry="true"><span>学习总览与计划</span></button>
-        <select class="plan-episode-select" id="planEpisodeSelect" aria-label="选择集数查看详细内容">
-          <option value="">选择集数查看详细内容</option>
+        <select class="plan-episode-select" id="planEpisodeSelect" aria-label="选择学习计划">
+          <option value="plan" ${(state.view === 'plan' && !state.planEpisode) ? 'selected' : ''}>学习总览与计划 - 全部</option>
           ${options}
         </select>
       `;
-      planEntry.querySelector('[data-plan-entry]').addEventListener('click', () => showOverview());
       planEntry.querySelector('#planEpisodeSelect').addEventListener('change', event => {
-        const value = Number(event.target.value);
+        const value = event.target.value;
         if (!value) return;
-        state.view = 'episode'; state.episode = value; state.tab = 'dialogue';
+        if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; location.hash = 'peppa-plan'; render(); return; }
+        state.view = 'plan'; state.planEpisode = Number(value); location.hash = 'peppa-plan'; render();
         location.hash = 'peppa';
         render();
         window.scrollTo({top: 0, behavior: 'smooth'});
@@ -252,7 +251,8 @@
   }
 
   function renderPlan() {
-    const listHtml = episodes().map((e, index) => {
+    const planEpisodes = state.planEpisode ? episodes().filter(e => e.episode === state.planEpisode) : episodes();
+    const listHtml = planEpisodes.map((e, index) => {
       const lines = e.dialogue;
       const grammar = pepaPlan?.weeklyGrammar?.[index] || [];
       const collocations = pepaPlan?.weeklyCollocations?.[index] || [];
