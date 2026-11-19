@@ -140,7 +140,6 @@
         </select>
       `;
       planEntry.querySelector('#planEpisodeSelect').addEventListener('change', event => {
-        console.log('PLAN_FILTER_CHANGE', event.target.value);
         const value = event.target.value;
         if (!value) return;
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; location.hash = 'peppa-plan'; render(); return; }
@@ -370,9 +369,7 @@
       document.querySelector('#loading').hidden = true;
       const planEpisodeView = document.querySelector('#content #episodeView');
       if (planEpisodeView) planEpisodeView.hidden = true;
-      const planHtml = '<div class="plan-content-wrap">' + renderPlan() + '</div>';
-      console.log('PLAN_FILTER_HTML_WEEKS', (planHtml.match(/plan-week/g)||[]).length);
-      $('#content').innerHTML = planHtml;
+      $('#content').innerHTML = '<div class="plan-content-wrap">' + renderPlan() + '</div>';
       bindPlanEvents($('#content'));
       renderList();
       return;
