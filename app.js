@@ -144,9 +144,8 @@
         if (!value) return;
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
-        console.log('FILTER_APPLY', value, state.planEpisode);
         render();
-        console.log('FILTER_APPLY_WEEKS', document.querySelectorAll('.plan-week').length);
+        console.log('FILTER_APPLY_WEEKS', document.querySelectorAll('.plan-week').length, state.planEpisode);
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
