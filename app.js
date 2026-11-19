@@ -140,6 +140,7 @@
         </select>
       `;
       planEntry.querySelector('#planEpisodeSelect').addEventListener('change', event => {
+        console.log('PLAN_FILTER_CHANGE', event.target.value);
         const value = event.target.value;
         if (!value) return;
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; location.hash = 'peppa-plan'; render(); return; }
