@@ -48,6 +48,7 @@
   const list = $('#episodeList');
   const search = $('#searchInput');
   const esc = (value = '') => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const seriesOrder = ['peppa', 'forest', 'journey'];
   const currentSeries = () => seriesMap[state.seriesId];
   const episodes = () => currentSeries().episodes;
   const episode = () => episodes().find(e => e.episode === state.episode) || episodes()[0];
@@ -123,11 +124,22 @@
     $('#catalogLabel').textContent = s.catalog;
     $('#countBadge').textContent = `${episodes().length} 集`;
     $('#siteFooter').textContent = s.footer;
-    $('#seriesSwitch').innerHTML = Object.values(seriesMap).map(item => `<button class="series-chip ${item.id === state.seriesId ? 'active' : ''}" data-series="${item.id}">${esc(item.switchLabel)}</button>`).join('');
+    $('#seriesSwitch').innerHTML = seriesOrder.map(id => {
+      const item = seriesMap[id];
+      return `<button class="series-chip ${item.id === state.seriesId ? 'active' : ''}" data-series="${item.id}">${esc(item.switchLabel)}</button>`;
+    }).join('');
     $('#seriesSwitch').querySelectorAll('[data-series]').forEach(btn => btn.addEventListener('click', () => setSeries(btn.dataset.series)));
-    $('#rangeFilters').innerHTML = (s.plan ? [['plan', '学习总览与计划', s.plan ? 'NEW' : ''], ...s.ranges] : s.ranges).map(([value, label, count]) => `<button class="filter ${((state.view === 'plan' && value === 'plan') || (state.view === 'episode' && value === state.range)) ? 'active' : ''}" data-range="${value}">${label} <span>${count || episodes().length}</span></button>`).join('');
+    const planEntry = $('#planEntry');
+    if (s.plan) {
+      planEntry.hidden = false;
+      planEntry.innerHTML = `<button class="plan-entry-button ${state.view === 'plan' ? 'active' : ''}" data-plan-entry="true"><span>学习总览与计划</span><span class="new-badge">NEW</span></button>`;
+      planEntry.querySelector('[data-plan-entry]').addEventListener('click', () => showOverview());
+    } else {
+      planEntry.hidden = true;
+      planEntry.innerHTML = '';
+    }
+    $('#rangeFilters').innerHTML = s.ranges.map(([value, label, count]) => `<button class="filter ${(state.view === 'episode' && value === state.range) ? 'active' : ''}" data-range="${value}">${label} <span>${count || episodes().length}</span></button>`).join('');
     $('#rangeFilters').querySelectorAll('[data-range]').forEach(btn => btn.addEventListener('click', () => {
-      if (btn.dataset.range === 'plan') { showOverview(); return; }
       state.view = 'episode'; state.range = btn.dataset.range; renderList(); renderSeriesShell();
     }));
   }
