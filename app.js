@@ -388,7 +388,8 @@
     }
     const e = episode(); if (!e) return;
     document.querySelector('#loading').hidden = true;
-    document.querySelector('#content #episodeView').hidden = false;
+    const episodeView = document.querySelector('#content #episodeView');
+    if (episodeView) episodeView.hidden = false;
     $('#prevBtn').addEventListener('click', () => { if (state.episode > 1) { state.episode--; render(); } });
     $('#nextBtn').addEventListener('click', () => { if (state.episode < episodes().length) { state.episode++; render(); } });
     document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => { state.tab = btn.dataset.tab; render(); }));
