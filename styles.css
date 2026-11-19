@@ -132,6 +132,7 @@ tr:nth-child(even) td { background: #f7faff; }
 .series-chip:hover, .series-chip.active { background: var(--blue); color: #fff; border-color: var(--blue); }
 .plan-entry { margin-top: 12px; display: flex; }
 .plan-entry[hidden] { display: none; }
+[data-stats-modal][hidden] { display: none !important; }
 .plan-entry-button { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #cbd7e8; border-radius: 10px; padding: 8px 13px; background: rgba(255,255,255,.85); color: var(--blue); font-size: 12px; font-weight: 800; transition: .2s ease; }
 .plan-entry-button:hover, .plan-entry-button.active { background: var(--blue); color: #fff; border-color: var(--blue); }
 .new-badge { border-radius: 999px; padding: 2px 6px; font-size: 10px; background: #ffe9a7; color: #7a5300; }
