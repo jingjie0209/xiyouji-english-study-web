@@ -294,7 +294,7 @@
             <div class="plan-days">${dayCards}</div>
             <details class="all-lines">
               <summary>查看本集全部 ${lines.length} 句台词</summary>
-              <div class="plan-lines">${lines.map(row => lineHtml(row, true)).join('')}</div>
+              ${lineTable(lines, true)}
             </details>
           </div>
         </section>
