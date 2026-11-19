@@ -145,6 +145,8 @@
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
         render();
+        const weeks = document.querySelectorAll('.plan-week').length;
+        console.log('PLAN_RENDERED_AFTER_FILTER', weeks, state.planEpisode);
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
