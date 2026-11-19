@@ -280,7 +280,6 @@
           : (dayIndex === 1 ? '复习周一晨读内容' : (dayIndex === 3 ? '复习周一、周三晨读内容' : '完整复习本周台词'));
         return `
           <article class="plan-day ${dayIndex === 0 ? 'active' : ''}">
-            <div class="plan-day-label">周${esc(name)}</div>
             <div class="day-block">
               <div class="day-block-heading"><div class="day-block-title">晨读</div><div class="plan-day-meta">${esc(morningTask)}</div></div>
               ${lineTable(morningItems, !isReview)}
@@ -308,10 +307,6 @@
           <div class="plan-body">
             <div class="plan-day-tabs" role="tablist">${dayTabs}</div>
             <div class="plan-days">${dayCards}</div>
-            <details class="all-lines">
-              <summary>查看本集全部 ${lines.length} 句台词</summary>
-              ${lineTable(lines, true)}
-            </details>
           </div>
         </section>
       `;
