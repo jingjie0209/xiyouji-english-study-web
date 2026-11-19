@@ -300,7 +300,7 @@
           <button class="plan-header" data-week-toggle="${e.episode}" aria-expanded="true">
             <span class="plan-week-no">W${String(e.episode).padStart(2, '0')}</span>
             <span class="plan-title"><strong>第 ${e.episode} 周 · ${esc(e.titleZh)}</strong><span>${esc(e.titleEn || '')} · ${lines.length} 句 · 3 个句型 · 10 个搭配</span></span>
-            <a class="week-download" href="assets/peppa-season1-summary.docx" download="小猪佩奇第一季_第${String(e.episode).padStart(2,'0')}周_${esc(e.titleZh)}.docx" aria-label="下载第${e.episode}周 Word">Word</a>
+            <a class="week-download" href="assets/weekly/第${String(e.episode).padStart(2,'0')}周_${esc(e.titleZh)}.docx" download="小猪佩奇第一季_第${String(e.episode).padStart(2,'0')}周_${esc(e.titleZh)}.docx" aria-label="下载第${e.episode}周 Word">Word</a>
             <span class="plan-arrow">›</span>
           </button>
           <div class="plan-body">
