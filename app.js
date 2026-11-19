@@ -371,8 +371,8 @@
       if (planEpisodeView) planEpisodeView.hidden = true;
       $('#content').innerHTML = '<div class="plan-content-wrap">' + renderPlan() + '</div>';
       bindPlanEvents($('#content'));
-      renderList();
       return;
+
     }
     if (!document.querySelector('#content #episodeView')) {
       $('#content').innerHTML = `
