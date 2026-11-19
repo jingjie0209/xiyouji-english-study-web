@@ -278,11 +278,12 @@
         const morningTask = [0, 2, 4].includes(dayIndex)
           ? `学习新台词 ${morningItems.length} 句`
           : (dayIndex === 1 ? '复习周一晨读内容' : (dayIndex === 3 ? '复习周一、周三晨读内容' : '完整复习本周台词'));
+        const isPureReview = [1, 3].includes(dayIndex) || [5, 6].includes(dayIndex);
         return `
           <article class="plan-day ${dayIndex === 0 ? 'active' : ''}">
             <div class="day-block">
               <div class="day-block-heading"><div class="day-block-title">晨读</div><div class="plan-day-meta">${esc(morningTask)}</div></div>
-              ${lineTable(morningItems, !isReview)}
+              ${isPureReview ? '<div class="plan-day-meta review-note">同上，不重复罗列台词</div>' : lineTable(morningItems, !isReview)}
             </div>
             <div class="day-block">
               <div class="day-block-heading"><div class="day-block-title">句型</div><div class="plan-day-meta">${esc(sentenceTasks[dayIndex])}</div></div>
