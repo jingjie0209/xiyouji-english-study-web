@@ -286,7 +286,7 @@
           <article class="plan-day ${dayIndex === 0 ? 'active' : ''}">
             <div class="day-block">
               <div class="day-block-heading"><div class="day-block-title">晨读</div><div class="plan-day-meta">${esc(morningTask)}</div></div>
-              ${isPureReview ? '<div class="plan-day-meta review-note">同上，不重复罗列台词</div>' : lineTable(morningItems, !isReview)}
+              ${isPureReview ? '<div class="plan-day-meta review-note">同上，不重复罗列台词</div>' : (dayIndex === 5 || dayIndex === 6 ? lineTable(morningItems, false) : lineTable(morningItems, true))}
             </div>
             <div class="day-block">
               <div class="day-block-heading"><div class="day-block-title">句型</div><div class="plan-day-meta">${esc(sentenceTasks[dayIndex])}</div></div>
