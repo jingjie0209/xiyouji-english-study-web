@@ -54,23 +54,17 @@
   const planData = { get grammar() { return window.PEPPA_PLAN_DATA?.grammar || []; }, get collocations() { return window.PEPPA_PLAN_DATA?.collocations || []; } };
 
   function newMorningGroups(items) {
-    const total = items.length;
+    const balanced = balancedParts(items, 3);
     const groups = Array.from({ length: 7 }, () => []);
-    const targets = [];
-    const firstRead = Math.min(Math.ceil(total * 0.7), 50);
-    const perDay = Math.ceil(firstRead / 3);
-    targets.push(...[perDay, perDay, total - (2 * perDay) > 0 ? total - (2 * perDay) : Math.ceil(total / 3)]);
-    targets.push(0, 0, 0, 0);
-    let cursor = 0;
-    [0, 2, 4].forEach((dayIndex, order) => {
-      const end = Math.min(total, cursor + targets[order]);
-      groups[dayIndex] = items.slice(cursor, end);
-      cursor = end;
-    });
-    // 周六日完整复习；如果前面分配有遗漏，把剩余句子并入周六。
-    groups[5] = items.slice(0, cursor);
-    groups[6] = items.slice(0, cursor);
-    return { groups, targets };
+    groups[0] = balanced[0];
+    groups[1] = balanced[0];
+    groups[2] = balanced[1];
+    groups[3] = [...balanced[0], ...balanced[1]];
+    groups[4] = balanced[2];
+    groups[5] = items;
+    groups[6] = items;
+    const reviewDays = new Set([1, 3, 5, 6]);
+    return { groups, reviewDays };
   }
 
   function buildSentencePractice(grammar) {
@@ -196,58 +190,88 @@
     `;
   }
 
+  function lineHtml(row, includeZh=true) {
+    return `
+      <div>
+        <div class="plan-line-en">${esc(row.lineNumber)}. ${esc(row.en)}</div>
+        ${includeZh ? `<div class="plan-line-zh">${esc(row.zh || '')}${row.ipa ? ` · /${esc(row.ipa)}/` : ''}</div>` : ''}
+      </div>
+    `;
+  }
+
+  function sentenceHtml(item, index) {
+    return `
+      <div class="plan-item">
+        <div class="plan-item-no">${esc(String(index + 1))}</div>
+        <div>
+          <div class="plan-item-title">${esc(item.type)} · ${esc(item.pattern)}</div>
+          <div class="plan-item-detail">${esc(item.description)}</div>
+          <div class="plan-item-detail">原文：${esc(item.source[0] || '')}</div>
+        </div>
+        <div class="plan-item-right">全季次数 ${esc(String(item.count))}</div>
+      </div>
+    `;
+  }
+
+  function collocationHtml(item, index) {
+    return `
+      <div class="plan-item">
+        <div class="plan-item-no">${esc(String(index + 1))}</div>
+        <div>
+          <div class="plan-item-title">${esc(item.phrase)}${item.ipa ? ` <span class="ipa">/${esc(item.ipa)}/</span>` : ''}</div>
+          <div class="plan-item-detail">${esc(item.zh)}</div>
+          <div class="plan-item-detail">语境：${esc(item.context)}</div>
+        </div>
+        <div class="plan-item-right">全季次数 ${esc(String(item.count))}</div>
+      </div>
+    `;
+  }
+
   function renderPlan() {
     const listHtml = episodes().map((e, index) => {
       const lines = e.dialogue;
       const grammar = pepaPlan?.weeklyGrammar?.[index] || [];
       const collocations = pepaPlan?.weeklyCollocations?.[index] || [];
-      const { groups } = newMorningGroups(lines);
+      const { groups, reviewDays } = newMorningGroups(lines);
       const sentencePractice = buildSentencePractice(grammar);
       const dailyCollocations = pairCollocations(collocations);
-      const linesHtml = lines.map(row => `
-        <div>
-          <div class="plan-line-en">${esc(row.lineNumber)}. ${esc(row.en)}</div>
-          <div class="plan-line-zh">${esc(row.zh || '')}${row.ipa ? ` · /${esc(row.ipa)}/` : ''}</div>
-        </div>
-      `).join('');
-      const morningHtml = groups.map((dayItems, dayIndex) => {
-        const label = `周${['一','二','三','四','五','六','日'][dayIndex]}`;
-        const task = [0,2,4].includes(dayIndex) ? `学习 ${dayItems.length} 句` : (dayItems.length ? `复习 ${dayItems.length} 句` : '复习周一至周五晨读');
+      const sentenceKeys = ['monday', 'tuesday', 'wednesday', 'thursdayToSunday', 'thursdayToSunday', 'thursdayToSunday', 'thursdayToSunday'];
+      const dayNames = ['一', '二', '三', '四', '五', '六', '日'];
+      const sentenceTasks = [
+        '学习句型 1',
+        '复习句型 1 + 学习句型 2',
+        '复习周一二句型 + 学习句型 3',
+        '根据 3 个句型举一反三',
+        '根据 3 个句型举一反三',
+        '根据 3 个句型举一反三',
+        '根据 3 个句型举一反三'
+      ];
+      const dayCards = dayNames.map((name, dayIndex) => {
+        const morningItems = groups[dayIndex] || [];
+        const isReview = reviewDays.has(dayIndex);
+        const sentenceItems = sentencePractice[sentenceKeys[dayIndex]] || [];
+        const collocItems = dayIndex <= 4 ? (dailyCollocations[dayIndex] || []) : collocations;
+        const morningTask = [0, 2, 4].includes(dayIndex)
+          ? `学习新台词 ${morningItems.length} 句`
+          : (dayIndex === 1 ? '复习周一晨读内容' : (dayIndex === 3 ? '复习周一、周三晨读内容' : '完整复习本周台词'));
         return `
           <article class="plan-day">
-            <div class="plan-day-label">${esc(label)}</div>
-            <div class="plan-day-title">晨读</div>
-            <div class="plan-day-meta">${esc(task)}</div>
-            <div class="plan-lines">${dayItems.map(row => `
-              <div>
-                <div class="plan-line-en">${esc(row.lineNumber)}. ${esc(row.en)}</div>
-                <div class="plan-line-zh">${esc(row.zh || '')}${row.ipa ? ` · /${esc(row.ipa)}/` : ''}</div>
-              </div>
-            `).join('') || '<div class="plan-day-meta">复习本周前面晨读内容。</div>'}</div>
-          </article>
-        `;
-      }).join('');
-      const sentenceDayHtml = ['monday','tuesday','wednesday','thursdayToSunday'].map((key, dayIndex) => {
-        const items = sentencePractice[key];
-        const label = dayIndex === 3 ? '周四–周日' : `周${['一','二','三'][dayIndex]}`;
-        const task = dayIndex < 2 ? `复习前面句型 + 学习句型 ${dayIndex + 1}` : (dayIndex === 2 ? '复习周一二句型 + 学习句型 3' : '根据 3 个句型举一反三');
-        return `
-          <article class="plan-day">
-            <div class="plan-day-label">${esc(label)}</div>
-            <div class="plan-day-title">句子</div>
-            <div class="plan-day-meta">${esc(task)}</div>
-            <div class="plan-grid">${items.map((item, itemIndex) => sentenceHtml(item, itemIndex)).join('') || '<div class="empty">本周期暂无句型安排。</div>'}</div>
-          </article>
-        `;
-      }).join('');
-      const collocDayHtml = dailyCollocations.map((items, dayIndex) => {
-        const label = `周${['一','二','三','四','五','六','日'][dayIndex]}`;
-        return `
-          <article class="plan-day">
-            <div class="plan-day-label">${esc(label)}</div>
-            <div class="plan-day-title">固定搭配 · 2 个</div>
-            <div class="plan-day-meta">${items.length ? '学习当前搭配' : '复习前 10 个搭配'}</div>
-            <div class="plan-grid">${items.map((item, itemIndex) => collocationHtml(item, index * 10 + dayIndex * 2 + itemIndex)).join('') || '<div class="empty">复习本周前 10 个固定搭配。</div>'}</div>
+            <div class="plan-day-label">周${esc(name)}</div>
+            <div class="day-block">
+              <div class="day-block-title">晨读</div>
+              <div class="plan-day-meta">${esc(morningTask)}</div>
+              <div class="plan-lines">${morningItems.map(row => lineHtml(row, !isReview)).join('') || '<div class="plan-day-meta">复习前面晨读内容。</div>'}</div>
+            </div>
+            <div class="day-block">
+              <div class="day-block-title">句型</div>
+              <div class="plan-day-meta">${esc(sentenceTasks[dayIndex])}</div>
+              <div class="plan-grid">${sentenceItems.map((item, itemIndex) => sentenceHtml(item, itemIndex)).join('') || '<div class="plan-day-meta">本周期暂无句型安排。</div>'}</div>
+            </div>
+            <div class="day-block">
+              <div class="day-block-title">固定搭配</div>
+              <div class="plan-day-meta">${dayIndex <= 4 ? '学习 2 个搭配' : '复习本周 10 个搭配'}</div>
+              <div class="plan-grid">${collocItems.map((item, itemIndex) => collocationHtml(item, index * 10 + dayIndex * 2 + itemIndex)).join('') || '<div class="plan-day-meta">复习前面固定搭配。</div>'}</div>
+            </div>
           </article>
         `;
       }).join('');
@@ -256,26 +280,14 @@
           <button class="plan-header" data-week-toggle="${e.episode}" aria-expanded="false">
             <span class="plan-week-no">W${String(e.episode).padStart(2, '0')}</span>
             <span class="plan-title"><strong>第 ${e.episode} 周 · ${esc(e.titleZh)}</strong><span>${esc(e.titleEn || '')} · ${lines.length} 句 · 3 个句型 · 10 个搭配 · <button class="ghost" data-open-episode="${e.episode}">打开本集</button></span></span>
-            <span class="plan-meta">晨读：周一三五<br>句子：周一至周三<br>搭配：每天 2 个</span>
+            <span class="plan-meta">晨读周一三五<br>句型周一至三<br>搭配每天 2 个</span>
             <span class="plan-arrow">›</span>
           </button>
           <div class="plan-body">
-            <div class="weekly-block">
-              <h3 class="plan-subhead">晨读 · 每周台词</h3>
-              <p class="plan-intro">周一、三、五学习新句；周二、四复习前面晨读；周六、周日完整复习全周。</p>
-              <div class="plan-day-list">${morningHtml}</div>
-            </div>
-            <div class="weekly-block">
-              <h3 class="plan-subhead">句子 · 3 个句型递进</h3>
-              <div class="plan-day-list">${sentenceDayHtml}</div>
-            </div>
-            <div class="weekly-block">
-              <h3 class="plan-subhead">固定搭配 · 每日 2 个</h3>
-              <div class="plan-day-list">${collocDayHtml}</div>
-            </div>
+            <div class="plan-days">${dayCards}</div>
             <details class="all-lines">
               <summary>查看本集全部 ${lines.length} 句台词</summary>
-              <div class="plan-lines">${linesHtml}</div>
+              <div class="plan-lines">${lines.map(row => lineHtml(row, true)).join('')}</div>
             </details>
           </div>
         </section>
@@ -287,7 +299,7 @@
           <div>
             <p class="overview-kicker">PEPPA PIG · 52 WEEK PLAN</p>
             <h2 class="overview-title">小猪佩奇第一季学习总览与计划</h2>
-            <p class="overview-desc">每周学习一集。晨读句子按周一、三、五推进，周二、四复习，周六、日完整复习；3 个句型在周一至周三递进学习，周四至周日举一反三；10 个固定搭配每天 2 个。</p>
+            <p class="overview-desc">每周学习一集。台词按周一、三、五均分推进；周二、四复习前面内容；周六、日完整复习且只看英文。3 个句型在周一至周三递进学习，周四至周日举一反三；固定搭配周一至周五每天 2 个，周末复习。</p>
           </div>
           <div class="overview-actions">
             <a class="action-link primary" href="assets/peppa-season1-summary.docx" download="小猪佩奇第一季_语法原句与固定搭配统计.docx">下载汇总版 Word</a>

@@ -95,6 +95,9 @@ tr:nth-child(even) td { background: #f7faff; }
 .weekly-block { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 15px; }
 .all-lines { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 12px 15px; }
 .all-lines summary { cursor: pointer; font-weight: 800; }
+.plan-days { display: grid; gap: 14px; }
+.day-block + .day-block { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.day-block-title { font-weight: 900; font-size: 13px; color: var(--blue); margin-bottom: 6px; }
 @media (max-width: 950px) {
   .header-inner { padding: 24px 20px; align-items: start; flex-direction: column; }
   .header-actions { width: 100%; }
