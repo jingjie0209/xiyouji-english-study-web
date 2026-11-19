@@ -296,6 +296,7 @@
           </article>
         `;
       }).join('');
+      const dayTabs = dayNames.map((name, dayIndex) => `<button class="plan-day-tab ${dayIndex === 0 ? 'active' : ''}" data-day-tab="${dayIndex}">周${esc(name)}</button>`).join('');
       return `
         <section class="plan-week" data-week="${e.episode}">
           <button class="plan-header" data-week-toggle="${e.episode}" aria-expanded="false">
@@ -305,6 +306,7 @@
             <span class="plan-arrow">›</span>
           </button>
           <div class="plan-body">
+            <div class="plan-day-tabs" role="tablist">${dayTabs}</div>
             <div class="plan-days">${dayCards}</div>
             <details class="all-lines">
               <summary>查看本集全部 ${lines.length} 句台词</summary>
@@ -336,6 +338,14 @@
         const shown = !stats.hidden;
         stats.hidden = shown;
         button.setAttribute('aria-expanded', shown ? 'false' : 'true');
+      });
+    });
+    root.querySelectorAll('[data-day-tab]').forEach(button => {
+      button.addEventListener('click', () => {
+        const week = button.closest('.plan-week');
+        const dayIndex = button.dataset.dayTab;
+        week.querySelectorAll('[data-day-tab]').forEach(item => item.classList.toggle('active', item === button));
+        week.querySelectorAll('.plan-day').forEach((day, index) => day.classList.toggle('active', String(index) === dayIndex));
       });
     });
     root.querySelectorAll('[data-week-toggle]').forEach(button => {
