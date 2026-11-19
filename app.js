@@ -143,7 +143,7 @@
         const value = event.target.value;
         if (!value) return;
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; console.log('PLAN_FILTER_SET plan'); render(); return; }
-        state.view = 'plan'; state.planEpisode = Number(value); console.log('PLAN_FILTER_SET', state.planEpisode); render();
+        state.view = 'plan'; state.planEpisode = Number(value); console.log('PLAN_FILTER_SET', state.planEpisode); window.setTimeout(() => console.log('AFTER_RENDER_WEEKS', document.querySelectorAll('.plan-week').length), 100); render();
       });
     } else {
       planEntry.hidden = true;
