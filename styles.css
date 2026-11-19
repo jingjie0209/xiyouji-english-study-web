@@ -92,6 +92,9 @@ tr:nth-child(even) td { background: #f7faff; }
 .context { font-family: Georgia, "Times New Roman", serif; color: #3a4c64; }
 .empty { padding: 50px; text-align: center; color: var(--muted); }
 .site-footer { max-width: 1500px; margin: 0 auto; padding: 0 25px 28px; color: #99a5b5; font-size: 12px; }
+.weekly-block { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 15px; }
+.all-lines { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 12px 15px; }
+.all-lines summary { cursor: pointer; font-weight: 800; }
 @media (max-width: 950px) {
   .header-inner { padding: 24px 20px; align-items: start; flex-direction: column; }
   .header-actions { width: 100%; }
