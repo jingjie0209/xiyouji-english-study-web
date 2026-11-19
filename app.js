@@ -144,6 +144,7 @@
         if (!value) return;
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
+        render();
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
