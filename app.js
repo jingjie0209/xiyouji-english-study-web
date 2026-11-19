@@ -206,7 +206,7 @@
   function lineTableRow(row, rowNumber, includeZh=true) {
     return `
       <tr class="${includeZh ? '' : 'review-row'}">
-        <td class="line-number">${esc(String(rowNumber))}</td>
+        <td class="line-number">${esc(String(row.lineNumber || rowNumber))}</td>
         <td class="line-en">${esc(row.en)}</td>
         ${includeZh ? `<td class="line-zh">${esc(row.zh || '')}</td>` : ''}
       </tr>
