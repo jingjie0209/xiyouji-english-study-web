@@ -194,10 +194,10 @@
     `;
   }
 
-  function lineTableRow(row, includeZh=true) {
+  function lineTableRow(row, rowNumber, includeZh=true) {
     return `
       <tr class="${includeZh ? '' : 'review-row'}">
-        <td class="line-number">${esc(String(row.lineNumber))}</td>
+        <td class="line-number">${esc(String(rowNumber))}</td>
         ${includeZh ? `<td class="line-zh">${esc(row.zh || '')}</td>` : ''}
         <td class="line-en">${esc(row.en)}</td>
         <td class="ipa">${row.ipa ? `/${esc(row.ipa)}/` : '—'}</td>
@@ -207,7 +207,7 @@
 
   function lineTable(rows, includeZh=true) {
     const header=`<tr>${includeZh ? '<th>中文</th>' : ''}<th>英文</th><th>音标</th></tr>`;
-    return `<table class="line-table"><thead>${header}</thead><tbody>${rows.map(row => lineTableRow(row,includeZh)).join('')}</tbody></table>`;
+    return `<table class="line-table"><thead>${header}</thead><tbody>${rows.map((row, index) => lineTableRow(row,index+1,includeZh)).join('')}</tbody></table>`;
   }
 
   function sentenceHtml(item, index) {
