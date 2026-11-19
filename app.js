@@ -54,22 +54,18 @@
   const episode = () => episodes().find(e => e.episode === state.episode) || episodes()[0];
   const planData = { get grammar() { return window.PEPPA_PLAN_DATA?.grammar || []; }, get collocations() { return window.PEPPA_PLAN_DATA?.collocations || []; } };
 
-  function balancedParts(items, count) {
-    const groups = Array.from({ length: count }, () => []);
-    items.forEach((item, index) => groups[index % count].push(item));
-    return groups.map(group => group.length ? group : []);
-  }
-
   function newMorningGroups(items) {
-    const balanced = balancedParts(items, 3);
+    // Split full dialogue sequentially into 3 contiguous chunks (Mon/Wed/Fri).
     const groups = Array.from({ length: 7 }, () => []);
-    groups[0] = balanced[0];
-    groups[1] = balanced[0];
-    groups[2] = balanced[1];
-    groups[3] = [...balanced[0], ...balanced[1]];
-    groups[4] = balanced[2];
-    groups[5] = items;
-    groups[6] = items;
+    const total = items.length;
+    const base = Math.floor(total / 3);
+    const remainder = total % 3;
+    const sizes = [base + (remainder > 0 ? 1 : 0), base + (remainder > 1 ? 1 : 0), base];
+    let cursor = 0;
+    sizes.forEach((size, order) => {
+      groups[order * 2] = items.slice(cursor, cursor + size);
+      cursor += size;
+    });
     const reviewDays = new Set([1, 3, 5, 6]);
     return { groups, reviewDays };
   }
