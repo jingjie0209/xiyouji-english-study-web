@@ -363,8 +363,6 @@
   document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => { state.tab = btn.dataset.tab; render(); }));
   $('#prevBtn').addEventListener('click', () => { if (state.episode > 1) { state.episode--; render(); } });
   $('#nextBtn').addEventListener('click', () => { if (state.episode < episodes().length) { state.episode++; render(); } });
-  $('#randomBtn').addEventListener('click', () => { state.episode = episodes()[Math.floor(Math.random() * episodes().length)].episode; render(); window.scrollTo({top:0,behavior:'smooth'}); });
-  $('#printBtn').addEventListener('click', () => { document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('print-active')); window.print(); setTimeout(() => document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('print-active')), 500); });
   window.addEventListener('hashchange', () => {
     const hash = location.hash.replace('#', '').split('?')[0];
     const targetView = hash === 'peppa-plan' ? 'plan' : 'episode';
