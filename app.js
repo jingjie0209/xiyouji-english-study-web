@@ -143,7 +143,7 @@
         state.view = 'episode';
         state.episode = Number(value);
         location.hash = 'peppa';
-        setTimeout(() => { render(); window.scrollTo({top: 0, behavior: 'smooth'}); }, 0);
+        requestAnimationFrame(() => { render(); window.scrollTo({top: 0, behavior: 'smooth'}); });
       });
     } else {
       planEntry.hidden = true;
