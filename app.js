@@ -132,7 +132,7 @@
     const planEntry = $('#planEntry');
     if (s.plan) {
       planEntry.hidden = false;
-      const options = episodes().map(e => `<option value="${e.episode}" ${(state.view === 'plan' && state.planEpisode === e.episode) ? 'selected' : ''}>学习计划 - 第 ${e.episode} 集</option>`).join('');
+      const options = episodes().map(e => `<option value="${e.episode}" ${(state.view === 'plan' && state.planEpisode === e.episode) ? 'selected' : ''}>学习计划 - 第 ${e.episode} 周</option>`).join('');
       planEntry.innerHTML = `
         <select class="plan-episode-select" id="planEpisodeSelect" aria-label="选择学习计划">
           <option value="plan" ${(state.view === 'plan' && !state.planEpisode) ? 'selected' : ''}>学习总览与计划 - 全部</option>
