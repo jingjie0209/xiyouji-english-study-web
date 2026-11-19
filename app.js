@@ -143,7 +143,7 @@
         const value = event.target.value;
         if (!value) return;
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; location.hash = 'peppa-plan'; render(); return; }
-        state.view = 'plan'; state.planEpisode = Number(value); location.hash = 'peppa-plan'; render();
+        state.view = 'plan'; state.planEpisode = Number(value); location.hash = 'peppa-plan'; console.log('SET_PLAN_EPISODE', state.planEpisode); render();
       });
     } else {
       planEntry.hidden = true;
