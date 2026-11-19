@@ -161,7 +161,8 @@ body[data-series="peppa"] .colloc-table th { background: #d47745; }
 }
 
 /* Peppa overview and weekly plan */
-.overview-footer { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 18px 24px; margin-bottom: 20px; }
+.overview-footer { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 18px 24px; }
+.overview-footer-gap { height: 20px; }
 .overview-footer .overview-stats { margin-top: 16px; }
 .overview-footer .overview-desc { margin: 0; }
 .overview-footer .stats-help { margin-left: 8px; }
