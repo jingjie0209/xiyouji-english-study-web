@@ -143,7 +143,9 @@
         const value = event.target.value;
         if (!value) return;
         if (value === 'plan') { state.view = 'plan'; state.planEpisode = null; render(); return; }
-        state.view = 'plan'; state.planEpisode = Number(value); render();
+        state.view = 'plan'; state.planEpisode = Number(value);
+        render();
+        window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
       planEntry.hidden = true;
