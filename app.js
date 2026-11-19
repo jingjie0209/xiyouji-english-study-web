@@ -132,8 +132,6 @@
     const planEntry = $('#planEntry');
     if (s.plan) {
       planEntry.hidden = false;
-      console.log('SHELL_RERENDER', state.view, state.planEpisode);
-      console.log('SHELL_RERENDER', state.view, state.planEpisode);
       const options = episodes().map(e => `<option value="${e.episode}" ${(state.view === 'plan' && state.planEpisode === e.episode) ? 'selected' : ''}>学习计划 - 第 ${e.episode} 周</option>`).join('');
       planEntry.innerHTML = `
         <select class="plan-episode-select" id="planEpisodeSelect" aria-label="选择学习计划">
@@ -146,9 +144,6 @@
         if (!value) return;
         state.view = 'plan';
         state.planEpisode = value === 'plan' ? null : Number(value);
-        console.log('FILTER_SET', value, state.view, state.planEpisode);
-        render();
-        console.log('AFTER_RENDER', document.querySelectorAll('.plan-week').length);
         window.scrollTo({top: 0, behavior: 'smooth'});
       });
     } else {
@@ -255,7 +250,6 @@
 
   function renderPlan() {
     const planEpisodes = state.planEpisode ? episodes().filter(e => e.episode === state.planEpisode) : episodes();
-    console.log('RENDER_PLAN_WEEKS', planEpisodes.length, 'planEpisode:', state.planEpisode, 'view:', state.view);
     const listHtml = planEpisodes.map((e, episodeIndex) => {
       const index = episodes().indexOf(e);
       const lines = e.dialogue;
