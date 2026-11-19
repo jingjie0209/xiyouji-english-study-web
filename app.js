@@ -365,6 +365,7 @@
     const s = currentSeries();
     renderSeriesShell();
     document.body.classList.toggle('plan-view', !!(s.plan && state.view === 'plan'));
+    window.__debugState = {view: state.view, planEpisode: state.planEpisode};
     if (s.plan && state.view === 'plan') {
       document.querySelector('#loading').hidden = true;
       const planEpisodeView = document.querySelector('#content #episodeView');
