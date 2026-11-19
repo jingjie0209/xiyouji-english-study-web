@@ -297,8 +297,8 @@
       }).join('');
       const dayTabs = dayNames.map((name, dayIndex) => `<button class="plan-day-tab ${dayIndex === 0 ? 'active' : ''}" data-day-tab="${dayIndex}">周${esc(name)}</button>`).join('');
       return `
-        <section class="plan-week" data-week="${e.episode}">
-          <button class="plan-header" data-week-toggle="${e.episode}" aria-expanded="false">
+        <section class="plan-week open" data-week="${e.episode}">
+          <button class="plan-header" data-week-toggle="${e.episode}" aria-expanded="true">
             <span class="plan-week-no">W${String(e.episode).padStart(2, '0')}</span>
             <span class="plan-title"><strong>第 ${e.episode} 周 · ${esc(e.titleZh)}</strong><span>${esc(e.titleEn || '')} · ${lines.length} 句 · 3 个句型 · 10 个搭配</span></span>
             <a class="week-download" href="assets/peppa-season1-summary.docx" download="小猪佩奇第一季_第${String(e.episode).padStart(2,'0')}周_${esc(e.titleZh)}.docx" aria-label="下载第${e.episode}周 Word">Word</a>
