@@ -172,7 +172,12 @@ body[data-series="peppa"] .colloc-table th { background: #d47745; }
 .action-link.primary { background: var(--blue); color: white; box-shadow: 0 4px 12px rgba(49,95,159,.22); }
 .action-link.ghost { border: 1px solid #cbd7e8; color: var(--blue); background: white; }
 .action-link:hover { transform: translateY(-1px); }
-.overview-stats { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); border: 1px solid var(--line); background: white; border-radius: 12px; margin-top: 24px; overflow: hidden; }
+.stats-modal { position: fixed; inset: 0; background: rgba(24,35,52,.42); display: grid; place-items: center; z-index: 100; padding: 20px; }
+.stats-modal[hidden] { display: none; }
+.stats-modal-inner { width: min(680px, 100%); background: white; border-radius: 16px; padding: 22px 24px; box-shadow: 0 18px 50px rgba(24,35,52,.25); }
+.stats-modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 16px; font-weight: 900; }
+.stats-modal-head button { border: 1px solid var(--line); background: white; color: var(--muted); width: 30px; height: 30px; border-radius: 999px; font-size: 16px; cursor: pointer; }
+.overview-stats { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); border: 1px solid var(--line); background: white; border-radius: 12px; overflow: hidden; }
 .overview-stat { padding: 16px; border-right: 1px solid var(--line); }
 .overview-stat:last-child { border-right: 0; }
 .overview-stat strong { display: block; font-size: 20px; color: var(--blue); }
