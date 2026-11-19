@@ -353,8 +353,9 @@
     renderSeriesShell();
     document.body.classList.toggle('plan-view', !!(s.plan && state.view === 'plan'));
     if (s.plan && state.view === 'plan') {
-      $('#loading').hidden = true;
-      $('#episodeView').hidden = true;
+      document.querySelector('#loading').hidden = true;
+      const planEpisodeView = document.querySelector('#content #episodeView');
+      if (planEpisodeView) planEpisodeView.hidden = true;
       $('#content').innerHTML = '<div class="plan-content-wrap">' + renderPlan() + '</div>';
       bindPlanEvents($('#content'));
       renderList();
