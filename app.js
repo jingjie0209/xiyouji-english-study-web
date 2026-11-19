@@ -297,8 +297,8 @@
         <section class="plan-week" data-week="${e.episode}">
           <button class="plan-header" data-week-toggle="${e.episode}" aria-expanded="false">
             <span class="plan-week-no">W${String(e.episode).padStart(2, '0')}</span>
-            <span class="plan-title"><strong>第 ${e.episode} 周 · ${esc(e.titleZh)}</strong><span>${esc(e.titleEn || '')} · ${lines.length} 句 · 3 个句型 · 10 个搭配 · <button class="ghost" data-open-episode="${e.episode}">打开本集</button></span></span>
-            <span class="plan-meta">晨读周一三五<br>句型周一至三<br>搭配每天 2 个</span>
+            <span class="plan-title"><strong>第 ${e.episode} 周 · ${esc(e.titleZh)}</strong><span>${esc(e.titleEn || '')} · ${lines.length} 句 · 3 个句型 · 10 个搭配</span></span>
+            <a class="week-download" href="assets/peppa-season1-summary.docx" download="小猪佩奇第一季_第${String(e.episode).padStart(2,'0')}周_${esc(e.titleZh)}.docx" aria-label="下载第${e.episode}周 Word">Word</a>
             <span class="plan-arrow">›</span>
           </button>
           <div class="plan-body">
@@ -319,10 +319,7 @@
             <h2 class="overview-title">小猪佩奇第一季学习总览与计划</h2>
             <p class="overview-desc">每周学习一集。台词按周一、三、五均分推进；周二、四复习前面内容；周六、日完整复习且只看英文。3 个句型在周一至周三递进学习，周四至周日举一反三；固定搭配周一至周五每天 2 个，周末复习。</p>
           </div>
-          <div class="overview-actions">
-            <a class="action-link primary" href="assets/peppa-season1-summary.docx" download="小猪佩奇第一季_语法原句与固定搭配统计.docx">下载汇总版 Word</a>
-            <a class="action-link ghost" href="#peppa">返回逐集学习</a>
-          </div>
+
         </div>
         <div class="overview-stats">
           <div class="overview-stat"><strong>52</strong><span>周</span></div>
@@ -339,17 +336,10 @@
   function bindPlanEvents(root=document) {
     root.querySelectorAll('[data-week-toggle]').forEach(button => {
       button.addEventListener('click', () => {
+        if (event.target.closest('.week-download')) return;
         const week = button.closest('.plan-week');
         const isOpen = week.classList.toggle('open');
         button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      });
-    });
-    root.querySelectorAll('[data-open-episode]').forEach(button => {
-      button.addEventListener('click', () => {
-        state.view = 'episode'; state.episode = Number(button.dataset.openEpisode); state.tab = 'dialogue';
-        location.hash = 'peppa';
-        render();
-        window.scrollTo({top: 0, behavior: 'smooth'});
       });
     });
   }
