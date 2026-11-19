@@ -271,7 +271,8 @@
       const dayCards = dayNames.map((name, dayIndex) => {
         let morningItems;
         if (dayIndex === 5 || dayIndex === 6) {
-          morningItems = (groups[0] || []).concat(groups[2] || []).concat(groups[4] || []);
+          // Weekend review always shows the complete episode dialogue.
+          morningItems = lines;
         } else {
           morningItems = groups[dayIndex] || [];
         }
